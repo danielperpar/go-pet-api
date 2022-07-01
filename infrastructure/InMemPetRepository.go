@@ -15,7 +15,7 @@ func (repository InMemRepository) GetPets() []domain.Pet{
 	return pets
 }
 
-func (repository InMemRepository) Create(pet domain.Pet) domain.Pet{
+func (repository InMemRepository) CreatePet(pet domain.Pet) domain.Pet{
 	pets = append(pets, pet)
 	return pet
 }

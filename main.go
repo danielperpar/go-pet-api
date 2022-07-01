@@ -18,9 +18,9 @@ func main() {
 	service := application.NewPetService(repository, mapper)
 	controller := application.NewPetController(service)
 	router := mux.NewRouter()
-	router.HandleFunc("/creamascota", controller.CreaMascota)
-	router.HandleFunc("/lismascotas", controller.LisMascotas)
-	router.HandleFunc("/ping", PingHandler)
+	router.HandleFunc("/creamascota", controller.CreaMascota).Methods("POST")
+	router.HandleFunc("/lismascotas", controller.LisMascotas).Methods("GET")
+	router.HandleFunc("/ping", PingHandler).Methods("GET")
 	http.Handle("/", router)
 
 	port := os.Getenv("PORT")

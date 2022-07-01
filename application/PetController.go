@@ -1,6 +1,7 @@
 package application
 
 import (
+	"encoding/json"
 	"net/http"
 )
 
@@ -13,11 +14,21 @@ func NewPetController(petService *PetService) *PetController {
 }
 
 func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, request *http.Request) {
-	//saco el param de la request
-	
+	petDto := PetDto{}
+	err := json.NewDecoder(request.Body).Decode(&petDto)
+	if err != nil{
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	petcontroller.petService.CreatePet(petDto)
+	writer.WriteHeader(http.StatusOK) //revisar si mejor un content created con header Location
+	writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(writer).Encode(petDto)
 }
 
 func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
-	//saco el param de la request
-	
+	pets := petcontroller.petService.GetPets()
+	writer.WriteHeader(http.StatusOK)
+	writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(writer).Encode(pets)
 }

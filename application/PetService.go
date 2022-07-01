@@ -13,9 +13,9 @@ func NewPetService(petRepository infrastructure.IPetRepository, petMapper *PetMa
 	return &PetService{petRepository: petRepository, petMapper: petMapper}
 }
 
-func (service *PetService) Create(pet PetDto){
+func (service *PetService) CreatePet(pet PetDto){
 	petEntiy := service.petMapper.MapDown(pet)
-	service.petRepository.Create(petEntiy)
+	service.petRepository.CreatePet(petEntiy)
 }
 
 func (service *PetService) GetPets() []PetDto {
