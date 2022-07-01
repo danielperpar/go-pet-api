@@ -21,15 +21,11 @@ func (service *PetStatsService) GetKpi(species string) domain.Kpi{
 	//avgAgePerSpec := service.getAvgAgePerSpecies(species)
 	//standDevSpec := service.getStandDevPerSpecies(species)
 
-	fmt.Println(species)
-
 	kpi := domain.Kpi{
 		PredomSpec: predSpec,
 		AvgAgePerSpec: domain.AvgAgePerSpecies{"dummy",1},
 		StandDevPerSpec: domain.StandDevPerSpecies{"dummy",1},
 	}
-
-	fmt.Println(kpi)
 
 	return kpi
 }
