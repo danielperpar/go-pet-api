@@ -6,11 +6,12 @@ import (
 )
 
 type PetController struct {
-	petService *PetService
+	petCrudService *PetCrudService
+	petStatsService *PetStatsService
 }
 
-func NewPetController(petService *PetService) *PetController {
-	return &PetController{petService: petService}
+func NewPetController(petCrudService *PetCrudService, petStatsService *PetStatsService) *PetController {
+	return &PetController{petCrudService: petCrudService, petStatsService: petStatsService}
 }
 
 func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, request *http.Request) {
@@ -20,15 +21,30 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	petcontroller.petService.CreatePet(petDto)
+	petcontroller.petCrudService.CreatePet(petDto)
 	writer.WriteHeader(http.StatusOK) //revisar si mejor un content created con header Location
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(petDto)
 }
 
 func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
-	pets := petcontroller.petService.GetPets()
+	pets := petcontroller.petCrudService.GetPets()
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(pets)
+}
+
+func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, request *http.Request) {
+	
+	keys, ok := request.URL.Query()["species"]
+
+	if !ok || len(keys[0]) < 1 {
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	petSpecies := keys[0]
+
+	kpi := petcontroller.petStatsService.GetKpi(petSpecies)
+	writer.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(writer).Encode(kpi)
 }

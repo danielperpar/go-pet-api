@@ -1,6 +1,8 @@
 package infrastructure
 
-import ("github.com/danielperpar/go-pet-api/domain")
+import (
+	"github.com/danielperpar/go-pet-api/domain"
+)
 
 var pets []domain.Pet = []domain.Pet{}
 
@@ -19,4 +21,3 @@ func (repository InMemRepository) CreatePet(pet domain.Pet) domain.Pet{
 	pets = append(pets, pet)
 	return pet
 }
-

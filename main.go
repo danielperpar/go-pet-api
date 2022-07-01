@@ -15,11 +15,13 @@ func main() {
 
 	repository := infrastructure.NewInMemRepository()
 	mapper := application.NewPetMapper()
-	service := application.NewPetService(repository, mapper)
-	controller := application.NewPetController(service)
+	petCrudService := application.NewPetCrudService(repository, mapper)
+	petStatsService := application.NewStatisticsService(repository, mapper)
+	controller := application.NewPetController(petCrudService, petStatsService)
 	router := mux.NewRouter()
 	router.HandleFunc("/creamascota", controller.CreaMascota).Methods("POST")
 	router.HandleFunc("/lismascotas", controller.LisMascotas).Methods("GET")
+	router.HandleFunc("/kpidemascotas", controller.KpiDeMascotas).Methods("GET")
 	router.HandleFunc("/ping", PingHandler).Methods("GET")
 	http.Handle("/", router)
 
