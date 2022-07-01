@@ -1,8 +1,8 @@
-package domain
+package application
 
 import "time"
 
-type Pet struct{
+type PetDto struct{
 	Id	int
 	Name string
 	Species string
