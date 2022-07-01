@@ -1,14 +1,16 @@
 package application
 
-import ("github.com/danielperpar/go-pet-api/infrastructure")
+import (
+	"github.com/danielperpar/go-pet-api/infrastructure"
+)
 
 type PetService struct {
 	petRepository infrastructure.IPetRepository
-	petMapper PetMapper
+	petMapper *PetMapper
 }
 
-func NewPetService(petRepository infrastructure.IPetRepository) *PetService {
-	return &PetService{petRepository: petRepository}
+func NewPetService(petRepository infrastructure.IPetRepository, petMapper *PetMapper) *PetService {
+	return &PetService{petRepository: petRepository, petMapper: petMapper}
 }
 
 func (service *PetService) Create(pet PetDto){
