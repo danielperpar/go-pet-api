@@ -6,6 +6,10 @@ type PetMapper struct{
 
 }
 
+func NewPetMapper() *PetMapper {
+	return &PetMapper{}
+}
+
 func (service *PetMapper) MapDown (petDto PetDto) domain.Pet{
 	petEntity := domain.Pet{
 		Id: petDto.Id,
