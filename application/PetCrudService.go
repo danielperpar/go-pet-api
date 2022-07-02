@@ -12,14 +12,10 @@ func NewPetCrudService(petRepository domain.IPetRepository) *PetCrudService {
 	return &PetCrudService{petRepository: petRepository}
 }
 
-func (service *PetCrudService) CreatePet(pet domain.Pet) domain.Pet{
+func (service *PetCrudService) CreatePet(pet domain.Pet) (domain.Pet, error){
 	return service.petRepository.CreatePet(pet)
 }
 
-func (service *PetCrudService) GetPets() *[]domain.Pet {
-	pets := service.petRepository.GetPets()
-	return pets
+func (service *PetCrudService) GetPets(start, count int) (*[]domain.Pet, error) {
+	return service.petRepository.GetPets(start,count)
 }
-
-	
-		

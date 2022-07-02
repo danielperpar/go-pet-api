@@ -13,7 +13,14 @@ import (
 )
 
 func main() {
-	repository := infrastructure.NewInMemRepository()
+
+	connString :=  "host=xxx port=xxx user=xxx password=xxx dbname=xxx sslmode=disable"
+	env := os.Getenv("ENV")
+	if env == ""{
+		connString = "host=localhost port=5432 user=postgres password=admin dbname=pet_api sslmode=disable"
+	}
+	
+	repository := infrastructure.NewPostgrePetRepositoy(connString)
 	petCrudService := application.NewPetCrudService(repository)
 	petStatsService := domain.NewStatisticsService(repository)
 	controller := application.NewPetController(petCrudService, petStatsService)

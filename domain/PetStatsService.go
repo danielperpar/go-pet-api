@@ -2,8 +2,9 @@ package domain
 
 import (
 	"errors"
-	"github.com/danielperpar/go-pet-api/common"
 	"math"
+
+	"github.com/danielperpar/go-pet-api/common"
 )
 
 type PetStatsService struct{
@@ -15,10 +16,16 @@ func NewStatisticsService(petRepository IPetRepository) *PetStatsService{
 }
 
 func (service *PetStatsService) GetKpi(species string) (Kpi, error){
-	pets := service.petRepository.GetPets()
+	pets,err := service.petRepository.GetPets(0,100) //TODO: Revisar esto
+
+	if err != nil{
+		return Kpi{}, errors.New(common.DbError)
+	}
+
 	if len(*pets) == 0 {
 		return Kpi{}, errors.New(common.NoPets)
 	}
+	
 	predSpec := service.getPredominantSpecies(pets)
 	avgAge := service.getAvgAge(pets, species)
 	stdDev := service.getStandDev(pets, avgAge, species)
