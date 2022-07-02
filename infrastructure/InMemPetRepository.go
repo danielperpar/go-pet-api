@@ -21,3 +21,31 @@ func (repository InMemRepository) CreatePet(pet domain.Pet) domain.Pet{
 	pets = append(pets, pet)
 	return pet
 }
+
+func (repository InMemRepository) GetPredominantSpecies() [] string {
+	speciesAmount := make(map[string]int)
+	maxAmount := 0
+
+	for _,pet := range pets {
+		_, found := speciesAmount[pet.Species]
+
+		if !found{
+			speciesAmount[pet.Species] = 1
+		}else{
+			speciesAmount[pet.Species] += 1
+		}
+
+		if speciesAmount[pet.Species] > maxAmount{
+			maxAmount = speciesAmount[pet.Species]
+		}
+	}
+	
+	var species []string;
+
+	for sp,amount := range speciesAmount {
+		if amount == maxAmount {
+			species = append(species, sp)
+		}
+	}
+	return species
+}

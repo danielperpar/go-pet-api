@@ -1,8 +1,6 @@
 package application
 
 import (
-	"fmt"
-
 	"github.com/danielperpar/go-pet-api/domain"
 	"github.com/danielperpar/go-pet-api/infrastructure"
 )
@@ -30,33 +28,9 @@ func (service *PetStatsService) GetKpi(species string) domain.Kpi{
 	return kpi
 }
 
-func (service *PetStatsService)getPredominantSpecies() string{
-	pets := service.petRepository.GetPets()
-
-	speciesAmount := make(map[string]int)
-
-	for _,pet := range pets {
-		_, found := speciesAmount[pet.Species]
-
-		if(!found){
-			speciesAmount[pet.Species] = 1
-		}else{
-			speciesAmount[pet.Species] += 1
-		}
-	}
-	
-	max := 0
-	species := ""
-
-	for sp,amount := range speciesAmount {
-		if amount > max {
-			max = amount
-			species = sp	
-		}
-	}
-	
-	return species
- }
+func (service *PetStatsService)getPredominantSpecies() []string{
+	return service.petRepository.GetPredominantSpecies()
+}
 
 func (service *PetStatsService)getAvgAgePerSpecies(species string) *domain.AvgAgePerSpecies {
 	return &domain.AvgAgePerSpecies{Species: "dummy", Avg: 0}
@@ -64,14 +38,5 @@ func (service *PetStatsService)getAvgAgePerSpecies(species string) *domain.AvgAg
 
 func (service *PetStatsService)getStandDevPerSpecies(species string) *domain.StandDevPerSpecies {
 	return &domain.StandDevPerSpecies{Species: "dummy", StandDev: 0}
-}
-
-func findPet(pets []domain.Pet, id int) *domain.Pet{
-	for _,pet:= range pets {
-		if(pet.Id == id){
-			return &pet
-		}
-	}
-	return nil
 }
 

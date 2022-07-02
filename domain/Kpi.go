@@ -11,7 +11,7 @@ type StandDevPerSpecies struct {
 }
 
 type Kpi struct {
-	PredomSpec      string
+	PredomSpec      []string
 	AvgAgePerSpec   AvgAgePerSpecies
 	StandDevPerSpec StandDevPerSpecies
 }
