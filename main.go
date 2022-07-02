@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/danielperpar/go-pet-api/application"
+	"github.com/danielperpar/go-pet-api/domain"
 	"github.com/danielperpar/go-pet-api/infrastructure"
 	"encoding/json"
 	"github.com/gorilla/mux"
@@ -12,10 +13,9 @@ import (
 )
 
 func main() {
-
 	repository := infrastructure.NewInMemRepository()
 	petCrudService := application.NewPetCrudService(repository)
-	petStatsService := application.NewStatisticsService(repository)
+	petStatsService := domain.NewStatisticsService(repository)
 	controller := application.NewPetController(petCrudService, petStatsService)
 	router := mux.NewRouter()
 	router.HandleFunc("/creamascota", controller.CreaMascota).Methods("POST")

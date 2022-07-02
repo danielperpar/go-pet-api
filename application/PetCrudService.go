@@ -1,15 +1,14 @@
 package application
 
 import (
-	"github.com/danielperpar/go-pet-api/infrastructure"
 	"github.com/danielperpar/go-pet-api/domain"
 )
 
 type PetCrudService struct {
-	petRepository infrastructure.IPetRepository
+	petRepository domain.IPetRepository
 }
 
-func NewPetCrudService(petRepository infrastructure.IPetRepository) *PetCrudService {
+func NewPetCrudService(petRepository domain.IPetRepository) *PetCrudService {
 	return &PetCrudService{petRepository: petRepository}
 }
 

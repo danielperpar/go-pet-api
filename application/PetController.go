@@ -4,17 +4,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
 	"github.com/danielperpar/go-pet-api/common"
 	"github.com/danielperpar/go-pet-api/domain"
 )
 
 type PetController struct {
 	petCrudService *PetCrudService
-	petStatsService *PetStatsService
+	petStatsService *domain.PetStatsService
 }
 
-func NewPetController(petCrudService *PetCrudService, petStatsService *PetStatsService) *PetController {
+func NewPetController(petCrudService *PetCrudService, petStatsService *domain.PetStatsService) *PetController {
 	return &PetController{petCrudService: petCrudService, petStatsService: petStatsService}
 }
 
