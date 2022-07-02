@@ -14,9 +14,8 @@ import (
 func main() {
 
 	repository := infrastructure.NewInMemRepository()
-	mapper := application.NewPetMapper()
-	petCrudService := application.NewPetCrudService(repository, mapper)
-	petStatsService := application.NewStatisticsService(repository, mapper)
+	petCrudService := application.NewPetCrudService(repository)
+	petStatsService := application.NewStatisticsService(repository)
 	controller := application.NewPetController(petCrudService, petStatsService)
 	router := mux.NewRouter()
 	router.HandleFunc("/creamascota", controller.CreaMascota).Methods("POST")

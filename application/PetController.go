@@ -2,7 +2,11 @@ package application
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+
+	"github.com/danielperpar/go-pet-api/common"
+	"github.com/danielperpar/go-pet-api/domain"
 )
 
 type PetController struct {
@@ -15,23 +19,23 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *PetStatsS
 }
 
 func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, request *http.Request) {
-	petDto := PetDto{}
-	err := json.NewDecoder(request.Body).Decode(&petDto)
+	pet := domain.Pet{}
+	err := json.NewDecoder(request.Body).Decode(&pet)
 	if err != nil{
 		writer.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	petcontroller.petCrudService.CreatePet(petDto)
-	writer.WriteHeader(http.StatusOK) //revisar si mejor un content created con header Location
+	petcontroller.petCrudService.CreatePet(pet)
+	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(petDto)
+	json.NewEncoder(writer).Encode(pet)
 }
 
 func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
 	pets := petcontroller.petCrudService.GetPets()
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(pets)
+	json.NewEncoder(writer).Encode(*pets)
 }
 
 func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, request *http.Request) {
@@ -43,8 +47,20 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 		return
 	}
 	petSpecies := keys[0]
+	kpi, err := petcontroller.petStatsService.GetKpi(petSpecies)
 
-	kpi := petcontroller.petStatsService.GetKpi(petSpecies)
+	if err != nil{
+		switch err.Message {
+		case common.NO_PETS :
+			fmt.Fprintf(writer, "%v", err.Message)
+			writer.WriteHeader(http.StatusNoContent)
+		default:
+			fmt.Fprintf(writer, "%v", common.UNKNOWN_ERROR)
+			writer.WriteHeader(http.StatusInternalServerError)
+		}
+		return
+	}
+	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(kpi)
 }

@@ -1,17 +1,17 @@
 package domain
 
-type AvgAgePerSpecies struct {
+type AvgAge struct {
 	Species string
-	Avg     int
+	Avg     float32
 }
 
-type StandDevPerSpecies struct {
+type StdDev struct {
 	Species  string
 	StandDev float32
 }
 
 type Kpi struct {
-	PredomSpec      []string
-	AvgAgePerSpec   AvgAgePerSpecies
-	StandDevPerSpec StandDevPerSpecies
+	PredomSpec *[]string
+	AvgAge     AvgAge
+	StdDev     StdDev
 }
