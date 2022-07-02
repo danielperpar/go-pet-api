@@ -49,12 +49,12 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 	kpi, err := petcontroller.petStatsService.GetKpi(petSpecies)
 
 	if err != nil{
-		switch err.Message {
-		case common.NO_PETS :
-			fmt.Fprintf(writer, "%v", err.Message)
+		switch err.Error() {
+		case common.NoPets :
+			fmt.Fprintf(writer, "%v", common.NoPets)
 			writer.WriteHeader(http.StatusNoContent)
 		default:
-			fmt.Fprintf(writer, "%v", common.UNKNOWN_ERROR)
+			fmt.Fprintf(writer, "%v", common.UnknownError)
 			writer.WriteHeader(http.StatusInternalServerError)
 		}
 		return

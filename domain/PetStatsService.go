@@ -1,7 +1,9 @@
 package domain
 
 import (
+	"errors"
 	"github.com/danielperpar/go-pet-api/common"
+	"math"
 )
 
 type PetStatsService struct{
@@ -12,28 +14,20 @@ func NewStatisticsService(petRepository IPetRepository) *PetStatsService{
 	return &PetStatsService{petRepository: petRepository}
 }
 
-func (service *PetStatsService) GetKpi(species string) (Kpi, *common.Error){
+func (service *PetStatsService) GetKpi(species string) (Kpi, error){
 	pets := service.petRepository.GetPets()
 	if len(*pets) == 0 {
-		return Kpi{}, &common.Error{Message:common.NO_PETS}
+		return Kpi{}, errors.New(common.NoPets)
 	}
-	
-	predSpec,err := service.getPredominantSpecies(pets)
-	if err != nil {
-		return Kpi{}, &common.Error{Message: err.Message}
-	}
-	avgAge,err := service.getAvgAge(pets, species)
-	if err !=nil {
-		return Kpi{}, &common.Error{Message: err.Message}
-	}
+	predSpec := service.getPredominantSpecies(pets)
+	avgAge := service.getAvgAge(pets, species)
+	stdDev := service.getStandDev(pets, avgAge, species)
 
-	//stdDev,err := service.getStandDevPerSpecies(species)
-
-	kpi := Kpi{PredomSpec: predSpec, AvgAge: avgAge, StdDev: StdDev{}}
+	kpi := Kpi{PredomSpec: predSpec, AvgAge: avgAge, StdDev: stdDev}
 	return kpi, nil
 }
 
-func (service *PetStatsService) getPredominantSpecies(pets *[]Pet) (*[] string, *common.Error) {
+func (service *PetStatsService) getPredominantSpecies(pets *[]Pet) *[] string {
 	maxAmount := 0
 	speciesAmount, maxAmount := service.getSpeciesAmount(pets)
 	
@@ -44,7 +38,7 @@ func (service *PetStatsService) getPredominantSpecies(pets *[]Pet) (*[] string, 
 			species = append(species, sp)
 		}
 	}
-	return &species, nil
+	return &species
 }
 
 func (service *PetStatsService) getSpeciesAmount( pets *[]Pet) (*map[string]int, int)  {
@@ -70,7 +64,7 @@ func (service *PetStatsService) getSpeciesAmount( pets *[]Pet) (*map[string]int,
 	return &speciesAmount,count
 }
 
-func (service *PetStatsService) getAvgAge(pets *[]Pet, species string) (AvgAge, *common.Error) {
+func (service *PetStatsService) getAvgAge(pets *[]Pet, species string) float32 {	
 	sum := float32(0.0)
 	count := float32(0.0)
 
@@ -80,13 +74,19 @@ func (service *PetStatsService) getAvgAge(pets *[]Pet, species string) (AvgAge, 
 			count++
 		}
 	}
-	
-	avg := AvgAge{Species: species, Avg: sum/count}
-	return avg, nil
+	return sum/count
 }
 
+ func (service *PetStatsService)getStandDev(pets *[]Pet, avgAge float32, species string) float32 {
+	var sum float64 = 0.0
 
-// func (service *PetStatsService)getStandDevPerSpecies(species string) (domain.StdDev, common.Error){
-	
-// }
+	for _,pet := range *pets {
+		if pet.Species == species {
+			diff := (float64(avgAge) - float64(pet.Age))
+			pow := math.Pow(diff,2) 
+			sum += pow
+		}
+	}
+	return float32(math.Sqrt(sum))
+ }
 
