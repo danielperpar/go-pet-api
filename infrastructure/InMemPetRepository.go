@@ -55,6 +55,7 @@ func (repository *InMemRepository) GetAvgAge(species string) (domain.AvgAge, *co
 			count++
 		}
 	}
+	
 	avg := domain.AvgAge{Species: species, Avg: sum/count}
 	return avg, nil
 }

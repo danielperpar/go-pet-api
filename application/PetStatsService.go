@@ -19,11 +19,14 @@ func (service *PetStatsService) GetKpi(species string) (domain.Kpi, *common.Erro
 	if err != nil {
 		return domain.Kpi{}, &common.Error{Message: err.Message}
 	}
+	avgAge,err := service.getAvgAgePerSpecies(species)
+	if err !=nil {
+		return domain.Kpi{}, &common.Error{Message: err.Message}
+	}
 
-	//avgAge,err := service.getAvgAgePerSpecies(species)
 	//stdDev,err := service.getStandDevPerSpecies(species)
 
-	kpi := domain.Kpi{PredomSpec: predSpec, AvgAge: domain.AvgAge{}, StdDev: domain.StdDev{}}
+	kpi := domain.Kpi{PredomSpec: predSpec, AvgAge: avgAge, StdDev: domain.StdDev{}}
 	return kpi, nil
 }
 
@@ -31,9 +34,9 @@ func (service *PetStatsService)getPredominantSpecies() (*[]string, *common.Error
 	return service.petRepository.GetPredominantSpecies()
 }
 
-// func (service *PetStatsService)getAvgAgePerSpecies(species string) (domain.AvgAge, common.Error){
-	
-// }
+ func (service *PetStatsService)getAvgAgePerSpecies(species string) (domain.AvgAge, *common.Error){
+	return service.petRepository.GetAvgAge(species)
+ }
 
 // func (service *PetStatsService)getStandDevPerSpecies(species string) (domain.StdDev, common.Error){
 	
