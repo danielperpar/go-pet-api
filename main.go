@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -54,7 +53,7 @@ func main() {
 		host := os.Getenv("HOST") 
 		port = os.Getenv("PORT")
 		addr = host + ":" + port
-		swaggerUrl = fmt.Sprint("%s/swagger/doc.json", addr)
+		swaggerUrl = host + "/swagger/doc.json"
 		
 		log.Println("address =>" + addr)
 		log.Println("swagger =>" + swaggerUrl)
@@ -71,7 +70,7 @@ func main() {
 
 	server := &http.Server{
 		Handler:      router,
-		Addr:         addr,
+		Addr:         "http://go-pet-api.herokuapp.com",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
