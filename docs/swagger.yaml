@@ -61,4 +61,33 @@ paths:
       summary: Create a pet
       tags:
       - PetController
+  /lismascotas:
+    get:
+      consumes:
+      - application/json
+      description: List all pets in the storage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Pet'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: List all pets
+      tags:
+      - PetController
 swagger: "2.0"

@@ -17,7 +17,7 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 	return &PetController{petCrudService: petCrudService, petStatsService: petStatsService}
 }
 
-// ShowAccount godoc
+// CreaMascota godoc
 // @Summary      Create a pet
 // @Description  Create a pet providing a pet model
 // @Tags         PetController
@@ -49,10 +49,24 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 	json.NewEncoder(writer).Encode(pet)
 }
 
+// LisMascotas godoc
+// @Summary      List all pets
+// @Description  List all pets in the storage
+// @Tags         PetController
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}  domain.Pet
+// @Failure      400  {object}  string
+// @Failure      404  {object}  string
+// @Failure      500  {object}  string
+// @Router       /lismascotas [get]
 func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
-	pets, err := petcontroller.petCrudService.GetPets()
-	if err != nil{
-		//manageErrors(err, writer)
+	pets, errCrud := petcontroller.petCrudService.GetPets()
+	if errCrud != nil{
+		custErr := errCrud.(*common.Error)
+		writer.WriteHeader(custErr.Code)
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode(custErr.Message)
 	}
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
