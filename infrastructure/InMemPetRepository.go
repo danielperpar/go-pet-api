@@ -13,11 +13,11 @@ func NewInMemRepository() *InMemRepository {
 	return &InMemRepository{}
 }
 
-func (repository *InMemRepository) GetPets() *[]domain.Pet{
-	return &pets
+func (repository *InMemRepository) GetPets() (*[]domain.Pet, error){
+	return &pets, nil
 }
 
-func (repository *InMemRepository) CreatePet(pet domain.Pet) domain.Pet{
+func (repository *InMemRepository) CreatePet(pet domain.Pet) error{
 	pets = append(pets, pet)
-	return pet
+	return nil
 }

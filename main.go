@@ -31,11 +31,12 @@ import (
 // @BasePath  /
 
 func main() {
-	repository := infrastructure.NewPostgrePetRepositoy()
-	err := repository.OpenConnection()
+
+	conn,err :=infrastructure.OpenConnection()
 	if err != nil{
 		log.Fatal(err)
 	}
+	repository := infrastructure.NewPostgrePetRepositoy(conn)
 	petCrudService := application.NewPetCrudService(repository)
 	petStatsService := domain.NewStatisticsService(repository)
 	controller := application.NewPetController(petCrudService, petStatsService)

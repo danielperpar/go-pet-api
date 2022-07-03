@@ -1,6 +1,6 @@
 package domain
 
 type IPetRepository interface {
-	CreatePet(pet Pet) (Pet,error)
+	CreatePet(pet Pet) error
 	GetPets() (*[]Pet,error)
 }

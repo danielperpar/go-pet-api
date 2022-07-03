@@ -15,15 +15,15 @@ func NewStatisticsService(petRepository IPetRepository) *PetStatsService{
 	return &PetStatsService{petRepository: petRepository}
 }
 
-func (service *PetStatsService) GetKpi(species string) (Kpi, error){
+func (service *PetStatsService) GetKpi(species string) (*Kpi, error){
 	pets,err := service.petRepository.GetPets() 
 
 	if err != nil{
-		return Kpi{}, err
+		return nil, err
 	}
 
 	if len(*pets) == 0 {
-		return Kpi{}, nil
+		return nil, nil
 	}
 
 	found := false
@@ -33,14 +33,14 @@ func (service *PetStatsService) GetKpi(species string) (Kpi, error){
 		}
 	}
 	if !found {
-		return Kpi{}, common.NewError(http.StatusNotFound, common.Domain_PetNotFound)
+		return nil, common.NewError(http.StatusNotFound, common.Domain_PetNotFound)
 	}
 	
 	predSpec := service.getPredominantSpecies(pets)
 	avgAge := service.getAvgAge(pets, species)
 	stdDev := service.getStandDev(pets, avgAge, species)
 
-	kpi := Kpi{PredomSpec: predSpec, AvgAge: avgAge, StdDev: stdDev}
+	kpi := NewKpi(predSpec, avgAge, stdDev)
 	return kpi, nil
 }
 

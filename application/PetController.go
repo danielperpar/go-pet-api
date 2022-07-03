@@ -38,7 +38,7 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 		return
 	}
 	pet = pet.ToLowerCase(pet) 
-	pet,errCrud := petcontroller.petCrudService.CreatePet(pet)
+	errCrud := petcontroller.petCrudService.CreatePet(pet)
 	if errCrud != nil{
 		custErr := errCrud.(*common.Error)
 		writer.WriteHeader(custErr.Code)
@@ -114,6 +114,6 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(kpi)
+	json.NewEncoder(writer).Encode(*kpi)
 }
 
