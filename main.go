@@ -47,7 +47,7 @@ func main() {
 	router.HandleFunc("/health", healthController.HealthCheck).Methods("GET")
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { 
 		w.WriteHeader(200)
-		json.NewEncoder(w).Encode("entro en la api")})
+		json.NewEncoder(w).Encode("Welcome! to use swagger go to: https://go-pet-api.herokuapp.com/swagger/index.html#/PetController")})
 
 	swaggerUrl := "http://localhost:8080/swagger/doc.json"
 	port := "8080"

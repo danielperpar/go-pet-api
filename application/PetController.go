@@ -3,6 +3,7 @@ package application
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/danielperpar/go-pet-api/common"
 	"github.com/danielperpar/go-pet-api/domain"
@@ -76,11 +77,11 @@ func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, requ
 
 // KpiDeMascotas godoc
 // @Summary      Get pets Kpi
-// @Description  Get pets Kpi such as predominant species, average age per species and std deviation for the age of the species
+// @Description  Get predominant species in the storage. Get average age and std deviation for the provided "species" parameter
 // @Tags         PetController
 // @Accept       json
 // @Produce      json
-// @Param        species   query      string  true "species get kpi from"
+// @Param        species   query      string  true "species to get average age and std deviation from"
 // @Success      200  {object}  domain.Kpi
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
@@ -95,7 +96,7 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 		return
 	}
 	petSpecies := keys[0]
-	kpi, err := petcontroller.petStatsService.GetKpi(petSpecies)
+	kpi, err := petcontroller.petStatsService.GetKpi(strings.ToLower(petSpecies))
 	if err != nil{
 		custErr := err.(*common.Error)
 		writer.WriteHeader(custErr.Code)

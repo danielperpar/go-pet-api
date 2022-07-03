@@ -73,7 +73,7 @@ const docTemplate = `{
         },
         "/kpidemascotas": {
             "get": {
-                "description": "Get pets Kpi such as predominant species, average age per species and std deviation for the age of the species",
+                "description": "Get predominant species in the storage. Get average age and std deviation for the provided \"species\" parameter",
                 "consumes": [
                     "application/json"
                 ],
@@ -87,7 +87,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "species get kpi from",
+                        "description": "species to get average age and std deviation from",
                         "name": "species",
                         "in": "query",
                         "required": true
