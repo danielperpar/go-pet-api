@@ -1,8 +1,9 @@
 package domain
 
 import (
-	"errors"
 	"math"
+	"net/http"
+
 	"github.com/danielperpar/go-pet-api/common"
 )
 
@@ -15,14 +16,14 @@ func NewStatisticsService(petRepository IPetRepository) *PetStatsService{
 }
 
 func (service *PetStatsService) GetKpi(species string) (Kpi, error){
-	pets,err := service.petRepository.GetPets(0,100) //TODO: Revisar esto
+	pets,err := service.petRepository.GetPets() 
 
 	if err != nil{
-		return Kpi{}, errors.New(common.DbError)
+		return Kpi{}, err
 	}
 
 	if len(*pets) == 0 {
-		return Kpi{}, errors.New(common.NoPets)
+		return Kpi{}, common.NewError(http.StatusNoContent, common.Domain_NoPets)
 	}
 	
 	predSpec := service.getPredominantSpecies(pets)
@@ -83,7 +84,7 @@ func (service *PetStatsService) getAvgAge(pets *[]Pet, species string) float32 {
 	return sum/count
 }
 
- func (service *PetStatsService)getStandDev(pets *[]Pet, avgAge float32, species string) float32 {
+ func (service *PetStatsService) getStandDev(pets *[]Pet, avgAge float32, species string) float32 {
 	var sum float64 = 0.0
 
 	for _,pet := range *pets {

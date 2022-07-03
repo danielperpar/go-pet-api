@@ -2,11 +2,13 @@ package infrastructure
 
 import (
 	"database/sql"
-	"errors"
+	"log"
+	"net/http"
+
 	"github.com/danielperpar/go-pet-api/common"
 	"github.com/danielperpar/go-pet-api/domain"
+
 	_ "github.com/lib/pq"
-	"log"
 )
 
 var db *sql.DB
@@ -20,9 +22,12 @@ func NewPostgrePetRepositoy() *PostgrePetRepositoy{
 
 func (repository *PostgrePetRepositoy) OpenConnection() error{
 	connString := GetConnectionString()
-	var err error
-	db, err = sql.Open("postgres", connString)
-	return err
+	var errOpen error
+	db, errOpen = sql.Open("postgres", connString)
+	if(errOpen != nil){
+		return common.NewError(http.StatusInternalServerError, errOpen.Error())
+	}
+	return nil
 }
 
 func (repository *PostgrePetRepositoy)CreatePet(pet domain.Pet) (domain.Pet, error){
@@ -30,31 +35,27 @@ func (repository *PostgrePetRepositoy)CreatePet(pet domain.Pet) (domain.Pet, err
    	_,errIns := db.Exec(sqlStatement,pet.Name,pet.Species,pet.Gender,pet.Age,pet.Dob)
 	if errIns != nil {
 		log.Println(errIns)
-		return domain.Pet{}, errors.New(common.DbError)
+		return domain.Pet{}, common.NewError(http.StatusInternalServerError, errIns.Error())
 	}
-
 	return pet, nil
 }
 
-func (repository *PostgrePetRepositoy)GetPets(start, count int) (*[]domain.Pet, error){
-	sqlStatement := `SELECT id,name,species,gender,age,dob FROM pets LIMIT $1 OFFSET $2`
-	rows, errQuery := db.Query(sqlStatement, count, start)
+func (repository *PostgrePetRepositoy)GetPets() (*[]domain.Pet, error){
+	sqlStatement := `SELECT id,name,species,gender,age,dob FROM pets`
+	rows, errQuery := db.Query(sqlStatement)
 	if errQuery != nil {
 		log.Println(errQuery)
-		return nil, errors.New(common.DbError)
+		return nil, common.NewError(http.StatusInternalServerError, errQuery.Error())
 	}
 	defer rows.Close()
-
 	pets := []domain.Pet{}
-
 	for rows.Next(){
 		var p domain.Pet
 		if errScan:= rows.Scan(&p.Id, &p.Name, &p.Species, &p.Gender, &p.Age, &p.Dob); errScan != nil {
 			log.Println(errScan)
-			return nil, errors.New(common.DbError) 
+			return nil, common.NewError(http.StatusInternalServerError, errScan.Error())
 		}
 		pets = append(pets, p)
 	}
-
 	return &pets, nil
 }

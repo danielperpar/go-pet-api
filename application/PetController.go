@@ -2,8 +2,8 @@ package application
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
+
 	"github.com/danielperpar/go-pet-api/common"
 	"github.com/danielperpar/go-pet-api/domain"
 )
@@ -17,16 +17,32 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 	return &PetController{petCrudService: petCrudService, petStatsService: petStatsService}
 }
 
+// ShowAccount godoc
+// @Summary      Create a pet
+// @Description  Create a pet providing a pet model
+// @Tags         PetController
+// @Accept       json
+// @Produce      json
+// @Param        pet   body      domain.Pet  true  "pet"
+// @Success      200  {object}  domain.Pet
+// @Failure      400  {object}  string
+// @Failure      404  {object}  string
+// @Failure      500  {object}  string
+// @Router       /creamascota [post]
 func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, request *http.Request) {
 	pet := domain.Pet{}
 	err := json.NewDecoder(request.Body).Decode(&pet)
 	if err != nil{
 		writer.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(writer).Encode(err.Error())
 		return
 	}
 	pet,errCrud := petcontroller.petCrudService.CreatePet(pet)
 	if errCrud != nil{
-		manageErrors(err, writer)
+		custErr := errCrud.(*common.Error)
+		writer.WriteHeader(custErr.Code)
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode(custErr.Message)
 	}
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
@@ -34,9 +50,9 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 }
 
 func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
-	pets, err := petcontroller.petCrudService.GetPets(0, 100) //TODO Revisar start y count
+	pets, err := petcontroller.petCrudService.GetPets()
 	if err != nil{
-		manageErrors(err, writer)
+		//manageErrors(err, writer)
 	}
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
@@ -53,26 +69,10 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 	petSpecies := keys[0]
 	kpi, err := petcontroller.petStatsService.GetKpi(petSpecies)
 	if err != nil{
-		manageErrors(err, writer)
+		//manageErrors(err, writer)
 	}
 	
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(kpi)
-}
-
-func manageErrors(err error, writer http.ResponseWriter){
-	switch err.Error() {
-	case common.NoPets :
-		fmt.Fprintf(writer, "%v", common.NoPets)
-		writer.WriteHeader(http.StatusNoContent)
-	break;
-	case common.DbError :
-		fmt.Fprintf(writer, "%v", common.NoPets)
-		writer.WriteHeader(http.StatusInternalServerError)
-	break;
-	default:
-		fmt.Fprintf(writer, "%v", common.UnknownError)
-		writer.WriteHeader(http.StatusInternalServerError)
-	}
 }

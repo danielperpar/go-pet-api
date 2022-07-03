@@ -16,6 +16,6 @@ func (service *PetCrudService) CreatePet(pet domain.Pet) (domain.Pet, error){
 	return service.petRepository.CreatePet(pet)
 }
 
-func (service *PetCrudService) GetPets(start, count int) (*[]domain.Pet, error) {
-	return service.petRepository.GetPets(start,count)
+func (service *PetCrudService) GetPets() (*[]domain.Pet, error) {
+	return service.petRepository.GetPets()
 }
