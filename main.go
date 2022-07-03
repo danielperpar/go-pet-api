@@ -52,7 +52,7 @@ func main() {
 	if os.Getenv("ENV") == "PROD" {
 		host := os.Getenv("HOST") 
 		port = os.Getenv("PORT")
-		addr = host + port
+		addr = host + ":" + port
 		swaggerUrl = addr + "/swagger/doc.json"
 		
 		log.Println("address =>" + addr)
