@@ -12,7 +12,7 @@ import (
 	"github.com/danielperpar/go-pet-api/domain"
 	"github.com/danielperpar/go-pet-api/infrastructure"
 	"github.com/gorilla/mux"
-	"github.com/swaggo/http-swagger"
+	httpSwagger "github.com/swaggo/http-swagger"
 )
 
 // @title           Pet API
@@ -53,8 +53,8 @@ func main() {
 	if os.Getenv("ENV") == "PROD" {
 		host := os.Getenv("HOST") 
 		port = os.Getenv("PORT")
-		swaggerUrl = fmt.Sprint("https://%s:%s/swagger/doc.json", host, port)
 		addr = host + ":" + port
+		swaggerUrl = fmt.Sprint("%s/swagger/doc.json", addr)
 		
 		log.Println("address =>" + addr)
 		log.Println("swagger =>" + swaggerUrl)
