@@ -46,14 +46,18 @@ func main() {
 	router.HandleFunc("/kpidemascotas", controller.KpiDeMascotas).Methods("GET")
 	router.HandleFunc("/health", healthController.HealthCheck).Methods("GET")
 
-	var swaggerUrl string
-	host := os.Getenv("HOST") 
-	port := os.Getenv("PORT")
-	if host != "" && port != "" {
-		swaggerUrl = fmt.Sprint("http://%s:%s/swagger/doc.json", host, port)
-	} else{
-		port = "8080"
-		swaggerUrl = "http://localhost:8080/swagger/doc.json"
+	swaggerUrl := "http://localhost:8080/swagger/doc.json"
+	port := "8080"
+	addr := "127.0.0.1:8080"
+
+	if os.Getenv("ENV") == "PROD" {
+		host := os.Getenv("HOST") 
+		port = os.Getenv("PORT")
+		swaggerUrl = fmt.Sprint("https://%s:%s/swagger/doc.json", host, port)
+		addr = host + ":" + port
+		
+		log.Println("address =>" + addr)
+		log.Println("swagger =>" + swaggerUrl)
 	}
 
 	router.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
@@ -67,7 +71,7 @@ func main() {
 
 	server := &http.Server{
 		Handler:      router,
-		Addr:         "127.0.0.1:" + port,
+		Addr:         addr,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
