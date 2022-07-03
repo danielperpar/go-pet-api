@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -44,13 +45,16 @@ func main() {
 	router.HandleFunc("/lismascotas", controller.LisMascotas).Methods("GET")
 	router.HandleFunc("/kpidemascotas", controller.KpiDeMascotas).Methods("GET")
 	router.HandleFunc("/health", healthController.HealthCheck).Methods("GET")
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { 
+		w.WriteHeader(200)
+		json.NewEncoder(w).Encode("entro en la api")})
 
 	swaggerUrl := "http://localhost:8080/swagger/doc.json"
 	port := "8080"
 	addr := "127.0.0.1" + ":" + port
 
 	if os.Getenv("ENV") == "PROD" {
-		host := os.Getenv("HOST") 
+		host := "0.0.0.0" 
 		port = os.Getenv("PORT")
 		addr = host + ":" + port
 		swaggerUrl = addr + "/swagger/doc.json"
