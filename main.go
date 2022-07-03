@@ -47,13 +47,13 @@ func main() {
 
 	swaggerUrl := "http://localhost:8080/swagger/doc.json"
 	port := "8080"
-	addr := "127.0.0.1:8080"
+	addr := "127.0.0.1" + ":" + port
 
 	if os.Getenv("ENV") == "PROD" {
 		host := os.Getenv("HOST") 
 		port = os.Getenv("PORT")
 		addr = host + ":" + port
-		swaggerUrl = host + "/swagger/doc.json"
+		swaggerUrl = addr + "/swagger/doc.json"
 		
 		log.Println("address =>" + addr)
 		log.Println("swagger =>" + swaggerUrl)
@@ -70,7 +70,7 @@ func main() {
 
 	server := &http.Server{
 		Handler:      router,
-		Addr:         "https://go-pet-api.herokuapp.com" + ":" + port,
+		Addr:         addr,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
