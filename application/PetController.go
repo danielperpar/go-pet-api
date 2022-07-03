@@ -3,7 +3,7 @@ package application
 import (
 	"encoding/json"
 	"net/http"
-	
+
 	"github.com/danielperpar/go-pet-api/common"
 	"github.com/danielperpar/go-pet-api/domain"
 )
@@ -91,7 +91,7 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 	if !ok || len(keys[0]) < 1 {
 		writer.WriteHeader(http.StatusBadRequest)
 		writer.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(writer).Encode("wrong query parameter")
+		json.NewEncoder(writer).Encode("Wrong query parameter")
 		return
 	}
 	petSpecies := keys[0]
@@ -107,10 +107,10 @@ func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, re
 	if err == nil && kpi.PredomSpec == nil {
 		writer.WriteHeader(http.StatusOK)
 		writer.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(writer).Encode("there are no species in the storage yet")
+		json.NewEncoder(writer).Encode("There are no species in the storage yet")
 		return
 	}
-	
+
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(kpi)

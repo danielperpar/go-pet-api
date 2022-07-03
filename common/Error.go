@@ -1,10 +1,13 @@
 package common
 
-import ("fmt")
+import (
+	"fmt"
+)
 
 //TODO: quizás no necesarios, revisar
 const (
 	Domain_NoPets       	string = "There are no pets"
+	Domain_PetNotFound		string = "Species not found"
 	Infrast_DbErrorOpen		string = "Open db connection Error"
 	Infrast_DbErrorInsert	string = "Database error on Insert"
 	Infrast_DbErrorQuery	string = "Database error on Query"
