@@ -6,12 +6,12 @@ import (
 )
 
 type Pet struct{
-	Id	int `json:"-"`
-	Name string
-	Species string
-	Gender string
-	Age int
-	Dob time.Time
+	Id	int 		`json:"-"`
+	Name string		`json:"name" example:"luke"`
+	Species string	`json:"species" example:"dog"`
+	Gender string	`json:"gender" example:"male"`
+	Age int			`json:"age" example:"2"`
+	Dob time.Time	`json:"dob" example:"2020-05-01T00:00:00Z"`
 }
 
 func (p Pet) ToLowerCase(pet Pet) Pet{

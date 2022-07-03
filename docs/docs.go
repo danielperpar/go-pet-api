@@ -176,19 +176,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "age": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 2
                 },
                 "dob": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "2020-05-01T00:00:00Z"
                 },
                 "gender": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "male"
                 },
                 "name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "luke"
                 },
                 "species": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "dog"
                 }
             }
         }

@@ -14,14 +14,19 @@ definitions:
   domain.Pet:
     properties:
       age:
+        example: 2
         type: integer
       dob:
+        example: "2020-05-01T00:00:00Z"
         type: string
       gender:
+        example: male
         type: string
       name:
+        example: luke
         type: string
       species:
+        example: dog
         type: string
     type: object
 host: localhost:8080
