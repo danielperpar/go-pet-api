@@ -3,7 +3,6 @@ package domain
 import (
 	"errors"
 	"math"
-
 	"github.com/danielperpar/go-pet-api/common"
 )
 

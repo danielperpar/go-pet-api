@@ -4,7 +4,6 @@ import (
 	"github.com/danielperpar/go-pet-api/application"
 	"github.com/danielperpar/go-pet-api/domain"
 	"github.com/danielperpar/go-pet-api/infrastructure"
-	"encoding/json"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -13,22 +12,20 @@ import (
 )
 
 func main() {
-
-	connString :=  "host=xxx port=xxx user=xxx password=xxx dbname=xxx sslmode=disable"
-	env := os.Getenv("ENV")
-	if env == ""{
-		connString = "host=localhost port=5432 user=postgres password=admin dbname=pet_api sslmode=disable"
+	repository := infrastructure.NewPostgrePetRepositoy()
+	err := repository.OpenConnection()
+	if err != nil{
+		log.Fatal(err)
 	}
-	
-	repository := infrastructure.NewPostgrePetRepositoy(connString)
 	petCrudService := application.NewPetCrudService(repository)
 	petStatsService := domain.NewStatisticsService(repository)
 	controller := application.NewPetController(petCrudService, petStatsService)
+	healthController := application.NewHealthController()
 	router := mux.NewRouter()
 	router.HandleFunc("/creamascota", controller.CreaMascota).Methods("POST")
 	router.HandleFunc("/lismascotas", controller.LisMascotas).Methods("GET")
 	router.HandleFunc("/kpidemascotas", controller.KpiDeMascotas).Methods("GET")
-	router.HandleFunc("/ping", PingHandler).Methods("GET")
+	router.HandleFunc("/health", healthController.HealthCheck).Methods("GET")
 	http.Handle("/", router)
 
 	port := os.Getenv("PORT")
@@ -44,9 +41,4 @@ func main() {
 
 	log.Println("Listening on :" + port + " ...")
 	log.Fatal(server.ListenAndServe())
-}
-
-func PingHandler(writer http.ResponseWriter, request *http.Request) {
-	writer.WriteHeader(200)
-	json.NewEncoder(writer).Encode("pong")
 }
