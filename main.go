@@ -70,7 +70,7 @@ func main() {
 
 	server := &http.Server{
 		Handler:      router,
-		Addr:         "http://go-pet-api.herokuapp.com",
+		Addr:         "https://go-pet-api.herokuapp.com" + ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
