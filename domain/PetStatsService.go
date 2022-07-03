@@ -2,9 +2,6 @@ package domain
 
 import (
 	"math"
-	"net/http"
-
-	"github.com/danielperpar/go-pet-api/common"
 )
 
 type PetStatsService struct{
@@ -23,7 +20,7 @@ func (service *PetStatsService) GetKpi(species string) (Kpi, error){
 	}
 
 	if len(*pets) == 0 {
-		return Kpi{}, common.NewError(http.StatusNoContent, common.Domain_NoPets)
+		return Kpi{}, nil
 	}
 	
 	predSpec := service.getPredominantSpecies(pets)

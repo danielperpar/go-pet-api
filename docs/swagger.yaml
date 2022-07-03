@@ -1,5 +1,16 @@
 basePath: /
 definitions:
+  domain.Kpi:
+    properties:
+      avgAge:
+        type: number
+      predomSpec:
+        items:
+          type: string
+        type: array
+      stdDev:
+        type: number
+    type: object
   domain.Pet:
     properties:
       age:
@@ -50,15 +61,41 @@ paths:
           description: Bad Request
           schema:
             type: string
-        "404":
-          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a pet
+      tags:
+      - PetController
+  /kpidemascotas:
+    get:
+      consumes:
+      - application/json
+      description: Get pets Kpi such as predominant species, average age per species
+        and std deviation for the age of the species
+      parameters:
+      - description: species get kpi from
+        in: query
+        name: species
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.Kpi'
+        "400":
+          description: Bad Request
           schema:
             type: string
         "500":
           description: Internal Server Error
           schema:
             type: string
-      summary: Create a pet
+      summary: Get pets Kpi
       tags:
       - PetController
   /lismascotas:
@@ -77,10 +114,6 @@ paths:
             type: array
         "400":
           description: Bad Request
-          schema:
-            type: string
-        "404":
-          description: Not Found
           schema:
             type: string
         "500":

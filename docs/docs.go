@@ -62,8 +62,46 @@ const docTemplate = `{
                             "type": "string"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/kpidemascotas": {
+            "get": {
+                "description": "Get pets Kpi such as predominant species, average age per species and std deviation for the age of the species",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "PetController"
+                ],
+                "summary": "Get pets Kpi",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "species get kpi from",
+                        "name": "species",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/domain.Kpi"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "type": "string"
                         }
@@ -106,12 +144,6 @@ const docTemplate = `{
                             "type": "string"
                         }
                     },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -123,6 +155,23 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "domain.Kpi": {
+            "type": "object",
+            "properties": {
+                "avgAge": {
+                    "type": "number"
+                },
+                "predomSpec": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "stdDev": {
+                    "type": "number"
+                }
+            }
+        },
         "domain.Pet": {
             "type": "object",
             "properties": {

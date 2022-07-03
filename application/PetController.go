@@ -3,7 +3,7 @@ package application
 import (
 	"encoding/json"
 	"net/http"
-
+	
 	"github.com/danielperpar/go-pet-api/common"
 	"github.com/danielperpar/go-pet-api/domain"
 )
@@ -26,7 +26,6 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 // @Param        pet   body      domain.Pet  true  "pet"
 // @Success      200  {object}  domain.Pet
 // @Failure      400  {object}  string
-// @Failure      404  {object}  string
 // @Failure      500  {object}  string
 // @Router       /creamascota [post]
 func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, request *http.Request) {
@@ -37,12 +36,14 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 		json.NewEncoder(writer).Encode(err.Error())
 		return
 	}
+	pet = pet.ToLowerCase(pet) 
 	pet,errCrud := petcontroller.petCrudService.CreatePet(pet)
 	if errCrud != nil{
 		custErr := errCrud.(*common.Error)
 		writer.WriteHeader(custErr.Code)
 		writer.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(writer).Encode(custErr.Message)
+		return
 	}
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
@@ -57,7 +58,6 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 // @Produce      json
 // @Success      200  {array}  domain.Pet
 // @Failure      400  {object}  string
-// @Failure      404  {object}  string
 // @Failure      500  {object}  string
 // @Router       /lismascotas [get]
 func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
@@ -67,26 +67,52 @@ func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, requ
 		writer.WriteHeader(custErr.Code)
 		writer.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(writer).Encode(custErr.Message)
+		return
 	}
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(*pets)
 }
 
+// KpiDeMascotas godoc
+// @Summary      Get pets Kpi
+// @Description  Get pets Kpi such as predominant species, average age per species and std deviation for the age of the species
+// @Tags         PetController
+// @Accept       json
+// @Produce      json
+// @Param        species   query      string  true "species get kpi from"
+// @Success      200  {object}  domain.Kpi
+// @Failure      400  {object}  string
+// @Failure      500  {object}  string
+// @Router       /kpidemascotas [get]
 func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, request *http.Request) {
 	keys, ok := request.URL.Query()["species"]
 
 	if !ok || len(keys[0]) < 1 {
 		writer.WriteHeader(http.StatusBadRequest)
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode("wrong query parameter")
 		return
 	}
 	petSpecies := keys[0]
 	kpi, err := petcontroller.petStatsService.GetKpi(petSpecies)
 	if err != nil{
-		//manageErrors(err, writer)
+		custErr := err.(*common.Error)
+		writer.WriteHeader(custErr.Code)
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode(custErr.Message)
+		return
+	}
+
+	if err == nil && kpi.PredomSpec == nil {
+		writer.WriteHeader(http.StatusOK)
+		writer.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(writer).Encode("there are no species in the storage yet")
+		return
 	}
 	
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(writer).Encode(kpi)
 }
+
