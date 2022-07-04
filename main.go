@@ -38,7 +38,7 @@ func main() {
 	}
 	repository := infrastructure.NewPostgrePetRepositoy(conn)
 	petCrudService := application.NewPetCrudService(repository)
-	petStatsService := domain.NewStatisticsService(repository)
+	petStatsService := domain.NewStatsService(repository)
 	controller := application.NewPetController(petCrudService, petStatsService)
 	healthController := application.NewHealthController()
 	router := mux.NewRouter()

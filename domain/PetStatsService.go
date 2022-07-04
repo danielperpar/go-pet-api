@@ -11,7 +11,7 @@ type PetStatsService struct{
 	petRepository IPetRepository
 }
 
-func NewStatisticsService(petRepository IPetRepository) *PetStatsService{
+func NewStatsService(petRepository IPetRepository) *PetStatsService{
 	return &PetStatsService{petRepository: petRepository}
 }
 

@@ -19,7 +19,7 @@ func NewPostgrePetRepositoy(db *sql.DB) *PostgrePetRepositoy{
 	 return &PostgrePetRepositoy{Db: db}
 }
 
-func (repository *PostgrePetRepositoy)CreatePet(pet domain.Pet) error{
+func (repository *PostgrePetRepositoy)CreatePet(pet *domain.Pet) error{
   	sqlStatement := `INSERT INTO pets(name,species,gender,age,dob) VALUES($1,$2,$3,$4,$5)`
    	_,errIns := repository.Db.Exec(sqlStatement,pet.Name,pet.Species,pet.Gender,pet.Age,pet.Dob)
 	if errIns != nil {

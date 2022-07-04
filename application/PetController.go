@@ -38,7 +38,7 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 		return
 	}
 	pet = pet.ToLowerCase(pet) 
-	errCrud := petcontroller.petCrudService.CreatePet(pet)
+	errCrud := petcontroller.petCrudService.CreatePet(&pet)
 	if errCrud != nil{
 		custErr := errCrud.(*common.Error)
 		writer.WriteHeader(custErr.Code)
