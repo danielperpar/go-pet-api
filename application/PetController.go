@@ -18,7 +18,7 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 	return &PetController{petCrudService: petCrudService, petStatsService: petStatsService}
 }
 
-// CreaMascota godoc
+// CreatePet godoc
 // @Summary      Create a pet
 // @Description  Create a pet providing a pet model
 // @Tags         PetController
@@ -29,7 +29,7 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
 // @Router       /creamascota [post]
-func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, request *http.Request) {
+func (petcontroller *PetController) CreatePet(writer http.ResponseWriter, request *http.Request) {
 	pet := domain.Pet{}
 	err := json.NewDecoder(request.Body).Decode(&pet)
 	if err != nil{
@@ -51,7 +51,7 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 	json.NewEncoder(writer).Encode(pet)
 }
 
-// LisMascotas godoc
+// ListPets godoc
 // @Summary      List all pets
 // @Description  List all pets in the storage
 // @Tags         PetController
@@ -61,7 +61,7 @@ func (petcontroller *PetController) CreaMascota(writer http.ResponseWriter, requ
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
 // @Router       /lismascotas [get]
-func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, request *http.Request) {
+func (petcontroller *PetController) ListPets(writer http.ResponseWriter, request *http.Request) {
 	pets, errCrud := petcontroller.petCrudService.GetPets()
 	if errCrud != nil{
 		custErr := errCrud.(*common.Error)
@@ -75,7 +75,7 @@ func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, requ
 	json.NewEncoder(writer).Encode(*pets)
 }
 
-// KpiDeMascotas godoc
+// PetsKpi godoc
 // @Summary      Get pets Kpi
 // @Description  Get predominant species in the storage. Get average age and std deviation for the provided "species" parameter
 // @Tags         PetController
@@ -86,7 +86,7 @@ func (petcontroller *PetController) LisMascotas(writer http.ResponseWriter, requ
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
 // @Router       /kpidemascotas [get]
-func (petcontroller *PetController) KpiDeMascotas(writer http.ResponseWriter, request *http.Request) {
+func (petcontroller *PetController) PetsKpi(writer http.ResponseWriter, request *http.Request) {
 	keys, ok := request.URL.Query()["species"]
 
 	if !ok || len(keys[0]) < 1 {

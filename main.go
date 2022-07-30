@@ -27,7 +27,6 @@ import (
 // @license.name  Apache 2.0
 // @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
 
-
 // @BasePath  /
 
 func main() {
@@ -42,9 +41,9 @@ func main() {
 	controller := application.NewPetController(petCrudService, petStatsService)
 	healthController := application.NewHealthController()
 	router := mux.NewRouter()
-	router.HandleFunc("/creamascota", controller.CreaMascota).Methods("POST")
-	router.HandleFunc("/lismascotas", controller.LisMascotas).Methods("GET")
-	router.HandleFunc("/kpidemascotas", controller.KpiDeMascotas).Methods("GET")
+	router.HandleFunc("/creamascota", controller.CreatePet).Methods("POST")
+	router.HandleFunc("/lismascotas", controller.ListPets).Methods("GET")
+	router.HandleFunc("/kpidemascotas", controller.PetsKpi).Methods("GET")
 	router.HandleFunc("/health", healthController.HealthCheck).Methods("GET")
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) { 
 		w.WriteHeader(200)
