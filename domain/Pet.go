@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"strings"
 	"time"
 )
 
@@ -16,13 +15,4 @@ type Pet struct{
 
 func NewPet(name string, species string, gender string, age int, dob time.Time) *Pet {
 	return &Pet{Name: name, Species: species, Gender: gender, Age: age, Dob: dob}
-}
-
-func (p Pet) ToLowerCase(pet Pet) Pet{
-	return Pet{Name : strings.ToLower(pet.Name), 
-		Species: strings.ToLower(pet.Species),
-		Gender: strings.ToLower(pet.Gender),
-		Age: pet.Age,
-		Dob: pet.Dob,
-	}
 }

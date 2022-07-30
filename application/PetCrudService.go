@@ -6,16 +6,18 @@ import (
 
 type PetCrudService struct {
 	petRepository domain.IPetRepository
+	petMapper *PetMapper
 }
 
 func NewPetCrudService(petRepository domain.IPetRepository) *PetCrudService {
 	return &PetCrudService{petRepository: petRepository}
 }
 
-func (service *PetCrudService) CreatePet(pet *domain.Pet) error {
-	return service.petRepository.CreatePet(pet)
+func (service *PetCrudService) CreatePet(pet *PetDto) error {
+	return service.petRepository.CreatePet(service.petMapper.MapDown(pet))
 }
 
-func (service *PetCrudService) GetPets() (*[]domain.Pet, error) {
-	return service.petRepository.GetPets()
+func (service *PetCrudService) GetPets() (*[]PetDto, error) {
+	pets, err := service.petRepository.GetPets()
+	return service.petMapper.MapListUp(pets), err
 }

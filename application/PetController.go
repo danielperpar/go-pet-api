@@ -12,6 +12,7 @@ import (
 type PetController struct {
 	petCrudService *PetCrudService
 	petStatsService *domain.PetStatsService
+	kpiMapper *KpiMapper
 }
 
 func NewPetController(petCrudService *PetCrudService, petStatsService *domain.PetStatsService) *PetController {
@@ -24,21 +25,20 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 // @Tags         PetController
 // @Accept       json
 // @Produce      json
-// @Param        pet   body      domain.Pet  true  "pet"
-// @Success      200  {object}  domain.Pet
+// @Param        pet   body     PetDto  true  "pet"
+// @Success      200  {object}  PetDto
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
 // @Router       /creamascota [post]
 func (petcontroller *PetController) CreatePet(writer http.ResponseWriter, request *http.Request) {
-	pet := domain.Pet{}
-	err := json.NewDecoder(request.Body).Decode(&pet)
+	petDto := PetDto{}
+	err := json.NewDecoder(request.Body).Decode(&petDto)
 	if err != nil{
 		writer.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(writer).Encode(err.Error())
 		return
 	}
-	pet = pet.ToLowerCase(pet) 
-	errCrud := petcontroller.petCrudService.CreatePet(&pet)
+	errCrud := petcontroller.petCrudService.CreatePet(petDto.ToLowerCase(petDto))
 	if errCrud != nil{
 		custErr := errCrud.(*common.Error)
 		writer.WriteHeader(custErr.Code)
@@ -48,7 +48,7 @@ func (petcontroller *PetController) CreatePet(writer http.ResponseWriter, reques
 	}
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(pet)
+	json.NewEncoder(writer).Encode(petDto)
 }
 
 // ListPets godoc
@@ -57,7 +57,7 @@ func (petcontroller *PetController) CreatePet(writer http.ResponseWriter, reques
 // @Tags         PetController
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}  domain.Pet
+// @Success      200  {array}  	PetDto
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
 // @Router       /lismascotas [get]
@@ -82,7 +82,7 @@ func (petcontroller *PetController) ListPets(writer http.ResponseWriter, request
 // @Accept       json
 // @Produce      json
 // @Param        species   query      string  true "species to get average age and std deviation from"
-// @Success      200  {object}  domain.Kpi
+// @Success      200  {object}  KpiDto
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
 // @Router       /kpidemascotas [get]
@@ -114,6 +114,6 @@ func (petcontroller *PetController) PetsKpi(writer http.ResponseWriter, request 
 
 	writer.WriteHeader(http.StatusOK)
 	writer.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(writer).Encode(*kpi)
+	json.NewEncoder(writer).Encode(*petcontroller.kpiMapper.MapUp(kpi))
 }
 

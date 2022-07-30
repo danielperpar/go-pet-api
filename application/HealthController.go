@@ -1,12 +1,13 @@
 package application
 
-import(
-	"net/http"
-	"encoding/json"
-	_ "github.com/lib/pq"
+import (
 	"database/sql"
+	"encoding/json"
 	"log"
+	"net/http"
+
 	"github.com/danielperpar/go-pet-api/infrastructure"
+	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
