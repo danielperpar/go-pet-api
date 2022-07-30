@@ -45,7 +45,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.Pet"
+                            "$ref": "#/definitions/application.PetDto"
                         }
                     }
                 ],
@@ -53,7 +53,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.Pet"
+                            "$ref": "#/definitions/application.PetDto"
                         }
                     },
                     "400": {
@@ -97,7 +97,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.Kpi"
+                            "$ref": "#/definitions/application.KpiDto"
                         }
                     },
                     "400": {
@@ -134,7 +134,7 @@ const docTemplate = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/domain.Pet"
+                                "$ref": "#/definitions/application.PetDto"
                             }
                         }
                     },
@@ -155,7 +155,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "domain.Kpi": {
+        "application.KpiDto": {
             "type": "object",
             "properties": {
                 "avgAge": {
@@ -172,7 +172,7 @@ const docTemplate = `{
                 }
             }
         },
-        "domain.Pet": {
+        "application.PetDto": {
             "type": "object",
             "properties": {
                 "age": {

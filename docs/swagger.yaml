@@ -1,6 +1,6 @@
 basePath: /
 definitions:
-  domain.Kpi:
+  application.KpiDto:
     properties:
       avgAge:
         type: number
@@ -11,7 +11,7 @@ definitions:
       stdDev:
         type: number
     type: object
-  domain.Pet:
+  application.PetDto:
     properties:
       age:
         example: 2
@@ -53,14 +53,14 @@ paths:
         name: pet
         required: true
         schema:
-          $ref: '#/definitions/domain.Pet'
+          $ref: '#/definitions/application.PetDto'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Pet'
+            $ref: '#/definitions/application.PetDto'
         "400":
           description: Bad Request
           schema:
@@ -90,7 +90,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/domain.Kpi'
+            $ref: '#/definitions/application.KpiDto'
         "400":
           description: Bad Request
           schema:
@@ -114,7 +114,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/domain.Pet'
+              $ref: '#/definitions/application.PetDto'
             type: array
         "400":
           description: Bad Request

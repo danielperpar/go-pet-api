@@ -1,17 +1,9 @@
 # github.com/KyleBanks/depth v1.2.1
 ## explicit
 github.com/KyleBanks/depth
-# github.com/PuerkitoBio/purell v1.1.1
-## explicit
-# github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
-## explicit
-# github.com/cpuguy83/go-md2man/v2 v2.0.0-20190314233015-f79a8a8ca69d
-## explicit; go 1.12
 # github.com/davecgh/go-spew v1.1.1
 ## explicit
 github.com/davecgh/go-spew/spew
-# github.com/ghodss/yaml v1.0.0
-## explicit
 # github.com/go-openapi/jsonpointer v0.19.5
 ## explicit; go 1.13
 github.com/go-openapi/jsonpointer
@@ -19,10 +11,10 @@ github.com/go-openapi/jsonpointer
 ## explicit; go 1.13
 github.com/go-openapi/jsonreference
 github.com/go-openapi/jsonreference/internal
-# github.com/go-openapi/spec v0.20.6
+# github.com/go-openapi/spec v0.20.5
 ## explicit; go 1.13
 github.com/go-openapi/spec
-# github.com/go-openapi/swag v0.21.1
+# github.com/go-openapi/swag v0.19.15
 ## explicit; go 1.11
 github.com/go-openapi/swag
 # github.com/gorilla/mux v1.8.0
@@ -36,7 +28,7 @@ github.com/josharian/intern
 github.com/lib/pq
 github.com/lib/pq/oid
 github.com/lib/pq/scram
-# github.com/mailru/easyjson v0.7.7
+# github.com/mailru/easyjson v0.7.6
 ## explicit; go 1.12
 github.com/mailru/easyjson/buffer
 github.com/mailru/easyjson/jlexer
@@ -44,10 +36,6 @@ github.com/mailru/easyjson/jwriter
 # github.com/pmezard/go-difflib v1.0.0
 ## explicit
 github.com/pmezard/go-difflib/difflib
-# github.com/russross/blackfriday/v2 v2.0.1
-## explicit
-# github.com/shurcooL/sanitized_anchor_name v1.0.0
-## explicit
 # github.com/stretchr/objx v0.4.0
 ## explicit; go 1.12
 github.com/stretchr/objx
@@ -61,23 +49,17 @@ github.com/swaggo/files
 # github.com/swaggo/http-swagger v1.3.0
 ## explicit; go 1.17
 github.com/swaggo/http-swagger
-# github.com/swaggo/swag v1.8.3
+# github.com/swaggo/swag v1.8.4
 ## explicit; go 1.18
 github.com/swaggo/swag
-# github.com/urfave/cli/v2 v2.3.0
-## explicit; go 1.11
-# golang.org/x/exp v0.0.0-20220613132600-b0d781184e0d
-## explicit; go 1.18
-# golang.org/x/net v0.0.0-20220630215102-69896b714898
+# golang.org/x/net v0.0.0-20220425223048-2871e0cb64e4
 ## explicit; go 1.17
 golang.org/x/net/webdav
 golang.org/x/net/webdav/internal/xml
-# golang.org/x/sys v0.0.0-20220702020025-31831981b65f
+# golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e
 ## explicit; go 1.17
 golang.org/x/sys/execabs
-# golang.org/x/text v0.3.7
-## explicit; go 1.17
-# golang.org/x/tools v0.1.11
+# golang.org/x/tools v0.1.10
 ## explicit; go 1.17
 golang.org/x/tools/go/ast/astutil
 golang.org/x/tools/go/buildutil

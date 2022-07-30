@@ -37,7 +37,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/domain.Pet"
+                            "$ref": "#/definitions/application.PetDto"
                         }
                     }
                 ],
@@ -45,7 +45,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.Pet"
+                            "$ref": "#/definitions/application.PetDto"
                         }
                     },
                     "400": {
@@ -89,7 +89,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/domain.Kpi"
+                            "$ref": "#/definitions/application.KpiDto"
                         }
                     },
                     "400": {
@@ -126,7 +126,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/domain.Pet"
+                                "$ref": "#/definitions/application.PetDto"
                             }
                         }
                     },
@@ -147,7 +147,7 @@
         }
     },
     "definitions": {
-        "domain.Kpi": {
+        "application.KpiDto": {
             "type": "object",
             "properties": {
                 "avgAge": {
@@ -164,7 +164,7 @@
                 }
             }
         },
-        "domain.Pet": {
+        "application.PetDto": {
             "type": "object",
             "properties": {
                 "age": {
