@@ -29,7 +29,7 @@ func NewPetController(petCrudService *PetCrudService, petStatsService *domain.Pe
 // @Success      200  {object}  PetDto
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
-// @Router       /creamascota [post]
+// @Router       /CreatePet [post]
 func (petcontroller *PetController) CreatePet(writer http.ResponseWriter, request *http.Request) {
 	petDto := PetDto{}
 	err := json.NewDecoder(request.Body).Decode(&petDto)
@@ -60,7 +60,7 @@ func (petcontroller *PetController) CreatePet(writer http.ResponseWriter, reques
 // @Success      200  {array}  	PetDto
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
-// @Router       /lismascotas [get]
+// @Router       /ListPets [get]
 func (petcontroller *PetController) ListPets(writer http.ResponseWriter, request *http.Request) {
 	pets, errCrud := petcontroller.petCrudService.GetPets()
 	if errCrud != nil{
@@ -85,7 +85,7 @@ func (petcontroller *PetController) ListPets(writer http.ResponseWriter, request
 // @Success      200  {object}  KpiDto
 // @Failure      400  {object}  string
 // @Failure      500  {object}  string
-// @Router       /kpidemascotas [get]
+// @Router       /Kpis [get]
 func (petcontroller *PetController) PetsKpi(writer http.ResponseWriter, request *http.Request) {
 	keys, ok := request.URL.Query()["species"]
 

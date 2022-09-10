@@ -25,7 +25,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/creamascota": {
+        "/CreatePet": {
             "post": {
                 "description": "Create a pet providing a pet model",
                 "consumes": [
@@ -71,7 +71,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/kpidemascotas": {
+        "/Kpis": {
             "get": {
                 "description": "Get predominant species in the storage. Get average age and std deviation for the provided \"species\" parameter",
                 "consumes": [
@@ -115,7 +115,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/lismascotas": {
+        "/ListPets": {
             "get": {
                 "description": "List all pets in the storage",
                 "consumes": [

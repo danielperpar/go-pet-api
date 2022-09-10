@@ -42,7 +42,7 @@ info:
   title: Pet API
   version: "1.0"
 paths:
-  /creamascota:
+  /CreatePet:
     post:
       consumes:
       - application/json
@@ -72,7 +72,7 @@ paths:
       summary: Create a pet
       tags:
       - PetController
-  /kpidemascotas:
+  /Kpis:
     get:
       consumes:
       - application/json
@@ -102,7 +102,7 @@ paths:
       summary: Get pets Kpi
       tags:
       - PetController
-  /lismascotas:
+  /ListPets:
     get:
       consumes:
       - application/json
